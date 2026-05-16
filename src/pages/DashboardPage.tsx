@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Severity } from '../types';
 import { MOCK_TASKS } from '../data/mockTasks';
 import Header from '../components/Header';
+import { useAuth } from '../auth/AuthContext';
 import TaskListPanel from '../components/TaskListPanel';
 import CalendarSidebar from '../components/CalendarSidebar';
 import ActionCenterPanel from '../components/ActionCenterPanel';
 
 export default function DashboardPage() {
+  const { signOut } = useAuth();
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isActionCenterOpen, setIsActionCenterOpen] = useState(false);
   const [activeSeverityFilter, setActiveSeverityFilter] = useState<Severity | null>(null);
@@ -25,7 +27,7 @@ export default function DashboardPage() {
     <div className="flex flex-col h-full">
       <Header
         onActionCenterClick={() => setIsActionCenterOpen(true)}
-        onLogout={() => console.log('logout')}
+        onLogout={signOut}
       />
 
       <div className="flex flex-1 overflow-hidden">
