@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Severity } from '../types';
+import { Severity, Task } from '../types';
 import { MOCK_TASKS } from '../data/mockTasks';
 import Header from '../components/Header';
 import { useAuth } from '../auth/AuthContext';
@@ -9,9 +9,12 @@ import ActionCenterPanel from '../components/ActionCenterPanel';
 
 export default function DashboardPage() {
   const { signOut } = useAuth();
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [extraTasks, setExtraTasks]             = useState<Task[]>([]);
+  const [selectedDate, setSelectedDate]         = useState<string | null>(null);
   const [isActionCenterOpen, setIsActionCenterOpen] = useState(false);
   const [activeSeverityFilter, setActiveSeverityFilter] = useState<Severity | null>(null);
+
+  const allTasks = [...MOCK_TASKS, ...extraTasks];
 
   const handleDateSelect = (date: string) => {
     setSelectedDate(date === '' || date === selectedDate ? null : date);
@@ -21,7 +24,9 @@ export default function DashboardPage() {
     setSelectedDate(null);
   };
 
-  const criticalTasks = MOCK_TASKS.filter(t => t.severity === 'Critical');
+  const handleAddTasks = (tasks: Task[]) => {
+    setExtraTasks(prev => [...prev, ...tasks]);
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -32,13 +37,13 @@ export default function DashboardPage() {
 
       <div className="flex flex-1 overflow-hidden">
         <TaskListPanel
-          tasks={MOCK_TASKS}
+          tasks={allTasks}
           activeSeverityFilter={activeSeverityFilter}
           onFilterChange={setActiveSeverityFilter}
         />
         <div className="pt-4 pr-4 flex-shrink-0">
           <CalendarSidebar
-            tasks={MOCK_TASKS}
+            tasks={allTasks}
             selectedDate={selectedDate}
             onDateSelect={handleDateSelect}
             onMonthChange={handleMonthChange}
@@ -48,8 +53,9 @@ export default function DashboardPage() {
 
       <ActionCenterPanel
         isOpen={isActionCenterOpen}
-        criticalTasks={criticalTasks}
+        criticalTasks={allTasks.filter(t => t.severity === 'Critical')}
         onClose={() => setIsActionCenterOpen(false)}
+        onAddTasks={handleAddTasks}
       />
     </div>
   );

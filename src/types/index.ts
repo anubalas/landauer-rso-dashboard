@@ -41,3 +41,14 @@ export interface DashboardState {
   isActionCenterOpen: boolean;
   activeSeverityFilter: Severity | null;
 }
+
+export type ComplianceStatus = 'COMPLIANT' | 'NON_COMPLIANT' | 'NEEDS_REVIEW';
+
+export interface ComplianceRule {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  regulation: string;
+  status: ComplianceStatus;
+}
