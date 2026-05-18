@@ -7,7 +7,7 @@ regulation, and inventory compliance.
 
 ## Screenshot reference
 See screenshot: landauer-screenshot.png
-(Save your screenshot in the project folder with this name)
+
 
 ## What I want it to do
 - Show a list of tasks with severity levels (Critical, High, Medium, Low)
