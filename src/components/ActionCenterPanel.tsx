@@ -67,7 +67,7 @@ export default function ActionCenterPanel({ isOpen, criticalTasks, onClose, onAd
     setReviewLoading(true);
     setReviewError(null);
     try {
-      const res = await fetch(import.meta.env.VITE_COMPLIANCE_API_URL);
+      const res = await fetch(import.meta.env.VITE_COMPLIANCE_DYNAMODB_URL);
       if (!res.ok) throw new Error(`Server returned ${res.status}`);
       const json = await res.json();
       const rules: ComplianceRule[] = Array.isArray(json) ? json : (json.rules ?? []);
